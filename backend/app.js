@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: process.env.frontend_URL,
+    origin: "https://jjobtracker.netlify.app",
     credentials: true,
   })
 );
