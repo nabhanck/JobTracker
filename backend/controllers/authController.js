@@ -23,7 +23,11 @@ const registerUser = async (req, res) => {
 
       const accessToken = generateToken(newUser);
 
-      res.cookie("auth_token", accessToken, { httpOnly: true });
+      res.cookie("auth_token", accessToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production", // ensures HTTPS in prod
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // allow cross-origin
+      });
 
       return customResponse(res, 201, "User registered successfully");
     } else {
@@ -51,7 +55,11 @@ const loginUser = async (req, res) => {
     }
     const accessToken = generateToken(user);
 
-    res.cookie("auth_token", accessToken, { httpOnly: true });
+    res.cookie("auth_token", accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // ensures HTTPS in prod
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // allow cross-origin
+    });
 
     return customResponse(res, 200, "Login Successfull", {
       email: user.email,
